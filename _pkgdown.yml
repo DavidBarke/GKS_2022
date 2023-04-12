@@ -1,0 +1,38 @@
+url: https://davidbarke.github.io/GKS_2022/
+template:
+  bootstrap: 5
+reference:
+- title: "Parameters"
+  contents:
+  - ghaderi_params
+- title: "Learning"
+  contents:
+  - pi_t1
+  - pi_t1_t
+- title: "Intensity"
+  contents:
+  - pdf_lambda_t1
+  - q_lambda_t1
+- title: "Wealth-consumption ratio"
+  contents:
+  - pc_t
+  - expectation_eqn_8
+  - conditional_expectation_eqn_8
+- title: "Price-dividend ratio"
+  contents:
+  - pd_t
+  - expectation_eqn_9
+  - conditional_expectation_eqn_9
+- title: "Fixed-point iteration"
+  contents:
+  - fpi_2d
+  - fpi_pc
+  - fpi_pd
+- title: "Asset pricing moments"
+  contents:
+  - risk_free_rate
+- title: "Utilities"
+  contents:
+  - grid_to_function
+
+

@@ -59,7 +59,7 @@ expectation_eqn_9 <- function(
 
 
 
-#' Conditional expectation of equation 8
+#' Conditional expectation of equation 9
 #'
 #' @export
 conditional_expectation_eqn_9 <- function(
