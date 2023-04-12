@@ -1,8 +1,8 @@
 #' Posterior belief
 #'
-#' @param pi_t Prior belief
-#' @param lambda_t1 Current intensity
-#' @param lambda_t Prior intensity
+#' @param pi_t \eqn{P(s_t = 1 \mid \lambda_{-\infty:t})}
+#' @param lambda_t1 Intensity at time \eqn{t+1}
+#' @param lambda_t Intensity at time \eqn{t}
 #' @param params List of parameters as returned by [ghaderi_params]
 #'
 #' @export
@@ -28,7 +28,6 @@ pi_t1 <- function(pi_t, lambda_t1, lambda_t, params = ghaderi_params()) {
 
 #' Probability of being in the depression state at t+1 given time-t information
 #'
-#' @param pi_t Probability of being in the depression state at time t
 #' @inheritParams pi_t1
 #'
 #' @export

@@ -1,6 +1,7 @@
 #' Wealth-consumption ratio
 #'
-#' @param params [ghaderi_params]
+#' @param pc Wealth-consumption value function
+#' @inheritParams pi_t1
 #'
 #' @export
 pc_t <- function(pc, lambda_t, pi_t, params = ghaderi_params()) {
@@ -28,6 +29,8 @@ pc_t <- function(pc, lambda_t, pi_t, params = ghaderi_params()) {
 
 #' \eqn{E[(1 + \exp(pc))^\theta]}
 #'
+#' @inheritParams pc_t
+#'
 #' @export
 expectation_eqn_8 <- function(pc, lambda_t, pi_t, params = ghaderi_params()) {
   cond_exp_1 <- conditional_expectation_eqn_8(
@@ -53,6 +56,9 @@ expectation_eqn_8 <- function(pc, lambda_t, pi_t, params = ghaderi_params()) {
 
 
 #' Conditional expectation of equation 8
+#'
+#' @param s_t1 \eqn{s_t = 0}: normal state; \eqn{s_t = 1}: disaster state
+#' @inheritParams pc_t
 #'
 #' @export
 conditional_expectation_eqn_8 <- function(

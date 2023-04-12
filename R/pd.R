@@ -1,5 +1,9 @@
 #' Price-dividend ratio
 #'
+#' @inheritParams pc_t
+#' @inheritParams fpi_pd
+#' @param pd Price-dividend value function
+#'
 #' @export
 pd_t <- function(pd, lambda_t, pi_t, pc_grid, params = ghaderi_params()) {
   d <- params$delta
@@ -31,6 +35,9 @@ pd_t <- function(pd, lambda_t, pi_t, pc_grid, params = ghaderi_params()) {
 
 #' \eqn{E[(1 + \exp(pc_{t+1}))^{\theta - 1} (1 + \exp(pd_{t+1}))]}
 #'
+#' @inheritParams pd_t
+#' @inheritParams pc_t
+#'
 #' @export
 expectation_eqn_9 <- function(
     pd, pc, lambda_t, pi_t, params = ghaderi_params()
@@ -60,6 +67,9 @@ expectation_eqn_9 <- function(
 
 
 #' Conditional expectation of equation 9
+#'
+#' @inheritParams conditional_expectation_eqn_8
+#' @inheritParams expectation_eqn_9
 #'
 #' @export
 conditional_expectation_eqn_9 <- function(

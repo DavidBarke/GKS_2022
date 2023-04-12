@@ -6,6 +6,13 @@
 \usage{
 q_lambda_t1(p, s_t1, lambda_t, params = ghaderi_params())
 }
+\arguments{
+\item{p}{Vector of probabilities.}
+
+\item{lambda_t}{Intensity at time \eqn{t}}
+
+\item{params}{List of parameters as returned by \link{ghaderi_params}}
+}
 \description{
 Quantiles of lambda_t1
 }

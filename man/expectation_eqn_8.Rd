@@ -6,6 +6,15 @@
 \usage{
 expectation_eqn_8(pc, lambda_t, pi_t, params = ghaderi_params())
 }
+\arguments{
+\item{pc}{Wealth-consumption value function}
+
+\item{lambda_t}{Intensity at time \eqn{t}}
+
+\item{pi_t}{\eqn{P(s_t = 1 \mid \lambda_{-\infty:t})}}
+
+\item{params}{List of parameters as returned by \link{ghaderi_params}}
+}
 \description{
 \eqn{E[(1 + \exp(pc))^\theta]}
 }

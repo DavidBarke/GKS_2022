@@ -7,11 +7,11 @@
 pi_t1(pi_t, lambda_t1, lambda_t, params = ghaderi_params())
 }
 \arguments{
-\item{pi_t}{Prior belief}
+\item{pi_t}{\eqn{P(s_t = 1 \mid \lambda_{-\infty:t})}}
 
-\item{lambda_t1}{Current intensity}
+\item{lambda_t1}{Intensity at time \eqn{t+1}}
 
-\item{lambda_t}{Prior intensity}
+\item{lambda_t}{Intensity at time \eqn{t}}
 
 \item{params}{List of parameters as returned by \link{ghaderi_params}}
 }

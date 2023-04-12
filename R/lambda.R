@@ -1,5 +1,7 @@
 #' PDF of lambda_t1
 #'
+#' @inheritParams pi_t1
+#'
 #' @export
 pdf_lambda_t1 <- function(s_t1, lambda_t, params = ghaderi_params()) {
   r_l <- params$rho_lambda
@@ -21,6 +23,9 @@ pdf_lambda_t1 <- function(s_t1, lambda_t, params = ghaderi_params()) {
 
 
 #' Quantiles of lambda_t1
+#'
+#' @param p Vector of probabilities.
+#' @inheritParams pdf_lambda_t1
 #'
 #' @export
 q_lambda_t1 <- function(p, s_t1, lambda_t, params = ghaderi_params()) {

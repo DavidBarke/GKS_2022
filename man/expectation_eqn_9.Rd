@@ -6,6 +6,17 @@
 \usage{
 expectation_eqn_9(pd, pc, lambda_t, pi_t, params = ghaderi_params())
 }
+\arguments{
+\item{pd}{Price-dividend value function}
+
+\item{pc}{Wealth-consumption value function}
+
+\item{lambda_t}{Intensity at time \eqn{t}}
+
+\item{pi_t}{\eqn{P(s_t = 1 \mid \lambda_{-\infty:t})}}
+
+\item{params}{List of parameters as returned by \link{ghaderi_params}}
+}
 \description{
 \eqn{E[(1 + \exp(pc_{t+1}))^{\theta - 1} (1 + \exp(pd_{t+1}))]}
 }

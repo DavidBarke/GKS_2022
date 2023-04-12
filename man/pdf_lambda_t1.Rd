@@ -6,6 +6,11 @@
 \usage{
 pdf_lambda_t1(s_t1, lambda_t, params = ghaderi_params())
 }
+\arguments{
+\item{lambda_t}{Intensity at time \eqn{t}}
+
+\item{params}{List of parameters as returned by \link{ghaderi_params}}
+}
 \description{
 PDF of lambda_t1
 }

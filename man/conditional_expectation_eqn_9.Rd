@@ -13,6 +13,19 @@ conditional_expectation_eqn_9(
   params = ghaderi_params()
 )
 }
+\arguments{
+\item{pd}{Price-dividend value function}
+
+\item{pc}{Wealth-consumption value function}
+
+\item{s_t1}{\eqn{s_t = 0}: normal state; \eqn{s_t = 1}: disaster state}
+
+\item{lambda_t}{Intensity at time \eqn{t}}
+
+\item{pi_t}{\eqn{P(s_t = 1 \mid \lambda_{-\infty:t})}}
+
+\item{params}{List of parameters as returned by \link{ghaderi_params}}
+}
 \description{
 Conditional expectation of equation 9
 }

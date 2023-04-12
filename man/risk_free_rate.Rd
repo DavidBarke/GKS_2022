@@ -4,7 +4,16 @@
 \alias{risk_free_rate}
 \title{Risk-free rate \eqn{r_{r,t}}}
 \usage{
-risk_free_rate(lambda_t, pi_t, pc_t, params = ghaderi_params())
+risk_free_rate(lambda_t, pi_t, pc_grid, params = ghaderi_params())
+}
+\arguments{
+\item{lambda_t}{Intensity at time \eqn{t}}
+
+\item{pi_t}{\eqn{P(s_t = 1 \mid \lambda_{-\infty:t})}}
+
+\item{pc_grid}{Output of \link{fpi_pc}.}
+
+\item{params}{List of parameters as returned by \link{ghaderi_params}}
 }
 \description{
 Risk-free rate \eqn{r_{r,t}}

@@ -7,7 +7,7 @@
 pi_t1_t(pi_t, params = ghaderi_params())
 }
 \arguments{
-\item{pi_t}{Probability of being in the depression state at time t}
+\item{pi_t}{\eqn{P(s_t = 1 \mid \lambda_{-\infty:t})}}
 
 \item{params}{List of parameters as returned by \link{ghaderi_params}}
 }
