@@ -11,3 +11,10 @@ RoxygenNote: 7.2.3
 URL: https://davidbarke.github.io/GKS_2022/
 Imports: 
     pracma
+Depends: 
+    R (>= 2.10)
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

@@ -25,7 +25,7 @@ ghaderi_params <- function(
     sigma_lambda = 0.0083,
     lambda_L = 0.0417,
     lambda_H = 0.4167,
-    mu_Z = -0.0200,
+    mu_Z = 0.0200,
     p_01 = 0.0017,
     p_10 = 0.0208
 ) {
@@ -50,7 +50,7 @@ ghaderi_params <- function(
       (1 - s_t1) * lambda_L + s_t1 * lambda_H
     },
     Phi_Z = function(x) {
-      1 / (1 - mu_Z * x)
+      - 1 / (1 - mu_Z * x)
     }
   )
 }

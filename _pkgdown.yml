@@ -13,6 +13,7 @@ reference:
   contents:
   - pdf_lambda_t1
   - q_lambda_t1
+  - J_t1
 - title: "Wealth-consumption ratio"
   contents:
   - pc_t
@@ -25,14 +26,16 @@ reference:
   - conditional_expectation_eqn_9
 - title: "Fixed-point iteration"
   contents:
-  - fpi_2d
-  - fpi_pc
-  - fpi_pd
-- title: "Asset pricing moments"
+  - fixed_point_iteration_2d
+  - fixed_point_iteration_pc
+  - fixed_point_iteration_pd
+  - grid_to_function
+- title: "Simulation"
   contents:
-  - risk_free_rate
+  - simulation
 - title: "Utilities"
   contents:
-  - grid_to_function
+  - annual_growth
+  - replace_na_with_nearest
 
 

@@ -13,14 +13,15 @@
 #' iteration is stopped.
 #'
 #' @export
-fpi_2d <- function(
-    f, x, y, ..., max_iterations = 100L, abs_tolerance = 1e-4
+fixed_point_iteration_2d <- function(
+    f, x, y, ..., max_iterations = 1000L, abs_tolerance = 1e-5
 ) {
   n <- length(x)
   m <- length(y)
-  mgrid <- pracma::meshgrid(x, y)
 
-  v_current <- v_new <- pracma::ones(n, m)
+  v_current <- v_new <- 1 * pracma::ones(m, n)
+  v_history <- list()
+  v_history[[1]] <- list(v_current)
 
   value_function <- function(x_t, y_t) {
     pracma::interp2(x, y, v_current, x_t, y_t)
@@ -29,19 +30,22 @@ fpi_2d <- function(
   for (k in seq_len(max_iterations)) {
     for (i in seq_len(n)) {
       for (j in seq_len(m)) {
-        v_new[i,j] <- f(value_function, x[i], y[j], ...)
+        v_new[j,i] <- f(value_function, x[i], y[j], ...)
       }
     }
     avg_error <- 1 / (n * m) * sum(abs(v_current - v_new))
     cli::cli_alert_info("Iteration {k} - avg. abs. error: {avg_error}")
+    cli::cli_alert_info("Average value: {1 / (n * m) * sum(v_current)}")
     v_current <- v_new
+    v_history <- c(v_history, list(v_new))
     if (avg_error < abs_tolerance) break
   }
 
   list(
     x = x,
     y = y,
-    v = v_current
+    v = v_current,
+    v_history = v_history
   )
 }
 
@@ -52,15 +56,22 @@ fpi_2d <- function(
 #' @inheritParams pi_t1
 #'
 #' @export
-fpi_pc <- function(params = ghaderi_params()) {
-  lambda <- pracma::linspace(0.038, 0.44, 50)
-  pi <- pracma::linspace(0, 1, 50)
+fixed_point_iteration_pc <- function(
+    n_lambda = 50,
+    n_pi = 20,
+    params = ghaderi_params(),
+    ...
+) {
+  lambda <- pracma::linspace(log(0.005), log(11), n_lambda)
+  lambda <- exp(lambda)
+  pi <- linspace(0, 1, n_pi)
 
-  fpi_2d(
+  fixed_point_iteration_2d(
     f = pc_t,
     x = lambda,
     y = pi,
-    params = params
+    params = params,
+    ...
   )
 }
 
@@ -68,15 +79,21 @@ fpi_pc <- function(params = ghaderi_params()) {
 
 #' Fixed-point iteration for price-dividend ratio
 #'
-#' @param pc_grid Output of [fpi_pc].
+#' @param pc_grid Output of [fixed_point_iteration_pc].
 #' @inheritParams pi_t1
 #'
 #' @export
-fpi_pd <- function(pc_grid, params = ghaderi_params()) {
-  lambda <- pracma::linspace(0.038, 0.44, 50)
-  pi <- pracma::linspace(0, 1, 50)
+fixed_point_iteration_pd <- function(
+    pc_grid,
+    n_lambda = 50,
+    n_pi = 20,
+    params = ghaderi_params()
+) {
+  lambda <- pracma::linspace(-10, log(11), n_lambda)
+  lambda <- exp(lambda)
+  pi <- pracma::linspace(0, 1, n_pi)
 
-  fpi_2d(
+  fixed_point_iteration_2d(
     f = pd_t,
     x = lambda,
     y = pi,

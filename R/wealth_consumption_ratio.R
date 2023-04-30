@@ -65,9 +65,6 @@ conditional_expectation_eqn_8 <- function(
     pc, s_t1, lambda_t, pi_t, params = ghaderi_params()
 ) {
   theta <- params$theta
-  s_l <- params$sigma_lambda
-  l_L <- params$lambda_L
-  l_H <- params$lambda_H
 
   pdf_l_t1 <- pdf_lambda_t1(s_t1, lambda_t, params)
 
@@ -79,6 +76,7 @@ conditional_expectation_eqn_8 <- function(
     )
 
     pc_t1 <- pc(lambda_t1, pi_t1)
+    #if (any(is.na(pc_t1))) print("NA")
     pc_t1[is.na(pc_t1)] <- 0
 
     (1 + exp(pc_t1))^theta *
@@ -86,12 +84,13 @@ conditional_expectation_eqn_8 <- function(
   }
 
   bounds <- q_lambda_t1(
-    p = c(0.001, 0.999),
+    p = c(0.000001, 0.999999),
     s_t1 = s_t1,
     lambda_t = lambda_t,
     params = params
   )
 
-  int <- integrate(f, bounds[1], bounds[2])
+  int <- integrate(f, bounds[1], bounds[2], abs.tol = 1e-12, subdivisions = 1e3L)
+
   int$value
 }

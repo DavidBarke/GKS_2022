@@ -1,0 +1,164 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%",
+  warning = FALSE,
+  message = FALSE,
+  error = FALSE
+)
+```
+
+# GKS2022
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+## Introduction
+
+The code in this document is kept to a minimum. All the logic is implemented in functions. I only cover high-level functions.
+
+## Setup
+
+Make sure to install missing packages with `install.packages("missing-package")`. This package is not on CRAN so it must be installed from Github with the following command:
+
+```{r}
+# remotes::install_github("DavidBarke/GKS_2022")
+```
+
+```{r setup}
+library(GKS2022)
+library(ggplot2)
+library(tibble)
+library(pracma)
+library(cli)
+```
+
+## Parameters
+
+The function `ghaderi_params()` can be used to set the parameter values of the model. It outputs a list that can be passed to most of the other functions. The default values for the parameters are the ones used by @Ghaderi_2022.
+
+```{r}
+str(ghaderi_params())
+```
+
+## Fixed-point iteration
+
+The function `fixed_point_iteration_pc` can be used to perform the (incorrect) fixed-point iteration for the wealth consumption ratio. The following code chunk outlines its logic.
+
+```{r}
+n <- 10 # Number of grid points
+K <- 20 # Number of iterations
+
+# Create a grid for lambda and pi
+lambda <- linspace(log(0.005), log(11), n)
+lambda <- exp(lambda)
+pi <- linspace(0, 1, n)
+
+pc_k <- pc_k1 <- ones(length(pi), length(lambda))
+
+pc <- function(lambda_t, pi_t) {
+  interp2(lambda, pi, pc_k, lambda_t, pi_t)
+}
+
+for (k in 1:K) { # loop over iterations
+  for (i in 1:n) { # loop over lambda
+    for (j in 1:n) { # loop over pi
+      # j, i is not a mistake. interp2 expects pc_current in pi x lambda format
+      # pc_t computes the right-hand side of equation 8
+      pc_k1[j,i] <- pc_t(pc, lambda[i], pi[j])
+    }
+  }
+  pc_k <- pc_k1
+  cli_alert_info("Iteration {k}: avg. value: {1/n^2 * sum(pc_k)}")
+}
+```
+
+As you can see the average wealth-consumption ratio increases with every iteration which is undesirable. The difference between subsequent iterations gets smaller but @Ghaderi_2022 suggest that the true average value should be around $1/3$.
+
+## Figure 2: Learning Dynamics, Intensity Process, Consumption Growth
+
+I replicate figure 2. First, I set the state variable $s_{t}$
+
+```{r}
+s_t <- rep(c(0, 1, 0), times = c(15, 70, 35))
+```
+
+Among other things, the function `simulation()` simulates the intensity process $\lambda_t$, belief evolution $\pi_t$, aggregate consumption growth process $\Delta c_t$, and price of a dividend claim $P_{d,t}$.
+
+```{r}
+sim <- simulation(s_t, pc_grid, pd_grid)
+
+str(sim)
+```
+
+```{r, echo=FALSE}
+ggplot(sim$data) + 
+  geom_line(aes(x = t, y = s_t), color = "blue") +
+  geom_line(aes(x = t, y = pi_t), color = "orange", linetype = "dashed") +
+  theme_bw() +
+  labs(
+    title = "Panel A",
+    x = "Months",
+    y = "s_t, pi_t"
+  ) +
+  scale_x_continuous(
+    expand = c(0, 0)
+  )
+
+ggplot(sim$data) +
+  geom_line(aes(x = t, y = lambda_t), color = "black") +
+  theme_bw() +
+  labs(
+    title = "Panel B",
+    x = "Months",
+    y = "lambda_t"
+  ) +
+  scale_x_continuous(
+    expand = c(0, 0)
+  )
+
+ann_data <- tibble(
+  t = 0:10,
+  y = c(1, annual_growth(exp(sim$data$delta_c_t)))
+)
+ggplot(ann_data) +
+  geom_line(aes(x = t, y = y), color = "black") +
+  theme_bw() +
+  labs(
+    title = "Panel C",
+    x = "Years",
+    y = "C_{t+1} / C_t"
+  ) +
+  scale_x_continuous(
+    expand = c(0, 0)
+  )
+```
+
+The price of the dividend claim is obviously wrong.
+
+```{r}
+ggplot(sim$data) +
+  geom_line(aes(x = t, y = P_D_t), color = "black") +
+  theme_bw() +
+  labs(
+    title = "Panel D",
+    x = "Months",
+    y = "P_d,t"
+  ) +
+  scale_x_continuous(
+    expand = c(0, 0)
+  )
+```
+
+# Asset Pricing Moments
+
+I would have liked to reproduce the simulations they did but without a correct price-dividend ratio this is a pointless endeavor. 
+

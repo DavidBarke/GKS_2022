@@ -15,7 +15,7 @@ ghaderi_params(
   sigma_lambda = 0.0083,
   lambda_L = 0.0417,
   lambda_H = 0.4167,
-  mu_Z = -0.02,
+  mu_Z = 0.02,
   p_01 = 0.0017,
   p_10 = 0.0208
 )
