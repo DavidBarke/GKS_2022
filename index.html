@@ -50,8 +50,165 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9">
-Replication of 'Learning, slowly unfolding disasters, and asset prices' - Ghaderi et al. (2022). 
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="gks2022">GKS2022<a class="anchor" aria-label="anchor" href="#gks2022"></a>
+</h1></div>
+<!-- badges: start -->
+<!-- badges: end -->
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>The code in this document is kept to a minimum. All the logic is implemented in functions. I only cover high-level functions.</p>
+</div>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
+<p>Make sure to install missing packages with <code>install.packages("missing-package")</code>. This package is not on CRAN so it must be installed from Github with the following command:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># remotes::install_github("DavidBarke/GKS_2022")</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidbarke.github.io/GKS_2022/">GKS2022</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">pracma</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cli.r-lib.org" class="external-link">cli</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="parameters">Parameters<a class="anchor" aria-label="anchor" href="#parameters"></a>
+</h2>
+<p>The function <code><a href="reference/ghaderi_params.html">ghaderi_params()</a></code> can be used to set the parameter values of the model. It outputs a list that can be passed to most of the other functions. The default values for the parameters are the ones used by @Ghaderi_2022.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="reference/ghaderi_params.html">ghaderi_params</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 18</span></span>
+<span><span class="co">#&gt;  $ gamma                  : num 5</span></span>
+<span><span class="co">#&gt;  $ psi                    : num 1.5</span></span>
+<span><span class="co">#&gt;  $ delta                  : num 0.999</span></span>
+<span><span class="co">#&gt;  $ mu_c                   : num 0.0026</span></span>
+<span><span class="co">#&gt;  $ sigma_c                : num 0.002</span></span>
+<span><span class="co">#&gt;  $ phi                    : num 3</span></span>
+<span><span class="co">#&gt;  $ rho_lambda             : num 0.993</span></span>
+<span><span class="co">#&gt;  $ sigma_lambda           : num 0.0083</span></span>
+<span><span class="co">#&gt;  $ lambda_L               : num 0.0417</span></span>
+<span><span class="co">#&gt;  $ lambda_H               : num 0.417</span></span>
+<span><span class="co">#&gt;  $ mu_Z                   : num 0.02</span></span>
+<span><span class="co">#&gt;  $ p_01                   : num 0.0017</span></span>
+<span><span class="co">#&gt;  $ p_10                   : num 0.0208</span></span>
+<span><span class="co">#&gt;  $ p_00                   : num 0.998</span></span>
+<span><span class="co">#&gt;  $ p_11                   : num 0.979</span></span>
+<span><span class="co">#&gt;  $ theta                  : num -12</span></span>
+<span><span class="co">#&gt;  $ long_run_mean_lambda_t1:function (s_t1)  </span></span>
+<span><span class="co">#&gt;   ..- attr(*, "srcref")= 'srcref' int [1:8] 49 31 51 5 31 5 246 248</span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x000002701cd19020&gt; </span></span>
+<span><span class="co">#&gt;  $ Phi_Z                  :function (x)  </span></span>
+<span><span class="co">#&gt;   ..- attr(*, "srcref")= 'srcref' int [1:8] 52 13 54 5 13 5 249 251</span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x000002701cd19020&gt;</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="fixed-point-iteration">Fixed-point iteration<a class="anchor" aria-label="anchor" href="#fixed-point-iteration"></a>
+</h2>
+<p>The function <code>fixed_point_iteration_pc</code> can be used to perform the (incorrect) fixed-point iteration for the wealth consumption ratio. The following code chunk outlines its logic.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="co"># Number of grid points</span></span>
+<span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">20</span> <span class="co"># Number of iterations</span></span>
+<span></span>
+<span><span class="co"># Create a grid for lambda and pi</span></span>
+<span><span class="va">lambda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/pracma/man/linspace.html" class="external-link">linspace</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.005</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">11</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span></span>
+<span><span class="va">lambda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">)</span></span>
+<span><span class="va">pi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/pracma/man/linspace.html" class="external-link">linspace</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="va">n</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pc_k</span> <span class="op">&lt;-</span> <span class="va">pc_k1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/pracma/man/eye.html" class="external-link">ones</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">lambda_t</span>, <span class="va">pi_t</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/pracma/man/interp2.html" class="external-link">interp2</a></span><span class="op">(</span><span class="va">lambda</span>, <span class="va">pi</span>, <span class="va">pc_k</span>, <span class="va">lambda_t</span>, <span class="va">pi_t</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">k</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">K</span><span class="op">)</span> <span class="op">{</span> <span class="co"># loop over iterations</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span> <span class="co"># loop over lambda</span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span> <span class="co"># loop over pi</span></span>
+<span>      <span class="co"># j, i is not a mistake. interp2 expects pc_current in pi x lambda format</span></span>
+<span>      <span class="co"># pc_t computes the right-hand side of equation 8</span></span>
+<span>      <span class="va">pc_k1</span><span class="op">[</span><span class="va">j</span>,<span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pc_t.html">pc_t</a></span><span class="op">(</span><span class="va">pc</span>, <span class="va">lambda</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">pi</span><span class="op">[</span><span class="va">j</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">pc_k</span> <span class="op">&lt;-</span> <span class="va">pc_k1</span></span>
+<span>  <span class="fu"><a href="https://cli.r-lib.org/reference/cli_alert.html" class="external-link">cli_alert_info</a></span><span class="op">(</span><span class="st">"Iteration {k}: avg. value: {1/n^2 * sum(pc_k)}"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>As you can see the average wealth-consumption ratio increases with every iteration which is undesirable. The difference between subsequent iterations gets smaller but @Ghaderi_2022 suggest that the true average value should be around <span class="math inline">1/3</span>.</p>
+</div>
+<div class="section level2">
+<h2 id="figure-2-learning-dynamics-intensity-process-consumption-growth">Figure 2: Learning Dynamics, Intensity Process, Consumption Growth<a class="anchor" aria-label="anchor" href="#figure-2-learning-dynamics-intensity-process-consumption-growth"></a>
+</h2>
+<p>I replicate figure 2. First, I set the state variable <span class="math inline"><em>s</em><sub><em>t</em></sub></span></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">s_t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">70</span>, <span class="fl">35</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Among other things, the function <code><a href="reference/simulation.html">simulation()</a></code> simulates the intensity process <span class="math inline"><em>λ</em><sub><em>t</em></sub></span>, belief evolution <span class="math inline"><em>π</em><sub><em>t</em></sub></span>, aggregate consumption growth process <span class="math inline"><em>Δ</em><em>c</em><sub><em>t</em></sub></span>, and price of a dividend claim <span class="math inline"><em>P</em><sub><em>d</em>, <em>t</em></sub></span>.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/simulation.html">simulation</a></span><span class="op">(</span><span class="va">s_t</span>, <span class="va">pc_grid</span>, <span class="va">pd_grid</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sim</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 2</span></span>
+<span><span class="co">#&gt;  $ data  : tibble [120 × 15] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ t             : int [1:120] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
+<span><span class="co">#&gt;   ..$ s_t           : num [1:120] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;   ..$ lambda_t      : num [1:120] 0.0417 0.0406 0.0369 0.0375 0.0367 ...</span></span>
+<span><span class="co">#&gt;   ..$ pi_t          : num [1:120] 0.00 2.13e-04 2.27e-05 9.05e-04 3.34e-04 ...</span></span>
+<span><span class="co">#&gt;   ..$ delta_c_t     : num [1:120] 0 0.00813 0.00459 0.00733 0.00327 ...</span></span>
+<span><span class="co">#&gt;   ..$ shock_lambda_t: num [1:120] 1.536 -0.661 -2.199 0.379 -0.53 ...</span></span>
+<span><span class="co">#&gt;   ..$ shock_c_t     : num [1:120] -0.172 2.767 0.993 2.365 0.334 ...</span></span>
+<span><span class="co">#&gt;   ..$ J_t           : num [1:120] -2.26e-03 8.67e-19 4.34e-19 0.00 0.00 ...</span></span>
+<span><span class="co">#&gt;   ..$ C_t           : num [1:120] 0.348 0.351 0.352 0.355 0.356 ...</span></span>
+<span><span class="co">#&gt;   ..$ pc_t          : num [1:120] 3.42 3.42 3.41 3.41 3.41 ...</span></span>
+<span><span class="co">#&gt;   ..$ pd_t          : num [1:120] 3.17 2.43 NA NA NA ...</span></span>
+<span><span class="co">#&gt;   ..$ PC_t          : num [1:120] 30.5 30.5 30.2 30.3 30.2 ...</span></span>
+<span><span class="co">#&gt;   ..$ PD_t          : num [1:120] 23.8 11.4 NA NA NA ...</span></span>
+<span><span class="co">#&gt;   ..$ P_C_t         : num [1:120] 10.6 10.7 10.6 10.7 10.7 ...</span></span>
+<span><span class="co">#&gt;   ..$ P_D_t         : num [1:120] 1 0.491 NA NA NA ...</span></span>
+<span><span class="co">#&gt;  $ params:List of 18</span></span>
+<span><span class="co">#&gt;   ..$ gamma                  : num 5</span></span>
+<span><span class="co">#&gt;   ..$ psi                    : num 1.5</span></span>
+<span><span class="co">#&gt;   ..$ delta                  : num 0.999</span></span>
+<span><span class="co">#&gt;   ..$ mu_c                   : num 0.0026</span></span>
+<span><span class="co">#&gt;   ..$ sigma_c                : num 0.002</span></span>
+<span><span class="co">#&gt;   ..$ phi                    : num 3</span></span>
+<span><span class="co">#&gt;   ..$ rho_lambda             : num 0.993</span></span>
+<span><span class="co">#&gt;   ..$ sigma_lambda           : num 0.0083</span></span>
+<span><span class="co">#&gt;   ..$ lambda_L               : num 0.0417</span></span>
+<span><span class="co">#&gt;   ..$ lambda_H               : num 0.417</span></span>
+<span><span class="co">#&gt;   ..$ mu_Z                   : num 0.02</span></span>
+<span><span class="co">#&gt;   ..$ p_01                   : num 0.0017</span></span>
+<span><span class="co">#&gt;   ..$ p_10                   : num 0.0208</span></span>
+<span><span class="co">#&gt;   ..$ p_00                   : num 0.998</span></span>
+<span><span class="co">#&gt;   ..$ p_11                   : num 0.979</span></span>
+<span><span class="co">#&gt;   ..$ theta                  : num -12</span></span>
+<span><span class="co">#&gt;   ..$ long_run_mean_lambda_t1:function (s_t1)  </span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "srcref")= 'srcref' int [1:8] 49 31 51 5 31 5 246 248</span></span>
+<span><span class="co">#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x000002701cd19020&gt; </span></span>
+<span><span class="co">#&gt;   ..$ Phi_Z                  :function (x)  </span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "srcref")= 'srcref' int [1:8] 52 13 54 5 13 5 249 251</span></span>
+<span><span class="co">#&gt;   .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x000002701cd19020&gt;</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"><img src="reference/figures/README-unnamed-chunk-7-2.png" width="100%"><img src="reference/figures/README-unnamed-chunk-7-3.png" width="100%"></p>
+<p>The price of the dividend claim is obviously wrong.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">P_D_t</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Panel D"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Months"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"P_d,t"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_x_continuous</span><span class="op">(</span></span>
+<span>    expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
+</div>
+</div>
+<div class="section level1">
+<h1 id="asset-pricing-moments">Asset Pricing Moments<a class="anchor" aria-label="anchor" href="#asset-pricing-moments"></a>
+</h1>
+<p>I would have liked to reproduce the simulations they did but without a correct price-dividend ratio this is a pointless endeavor.</p>
+</div>
+
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">

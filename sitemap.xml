@@ -13,6 +13,12 @@
     <loc>https://davidbarke.github.io/GKS_2022/index.html</loc>
   </url>
   <url>
+    <loc>https://davidbarke.github.io/GKS_2022/reference/J_t1.html</loc>
+  </url>
+  <url>
+    <loc>https://davidbarke.github.io/GKS_2022/reference/annual_growth.html</loc>
+  </url>
+  <url>
     <loc>https://davidbarke.github.io/GKS_2022/reference/conditional_expectation_eqn_8.html</loc>
   </url>
   <url>
@@ -25,13 +31,13 @@
     <loc>https://davidbarke.github.io/GKS_2022/reference/expectation_eqn_9.html</loc>
   </url>
   <url>
-    <loc>https://davidbarke.github.io/GKS_2022/reference/fpi_2d.html</loc>
+    <loc>https://davidbarke.github.io/GKS_2022/reference/fixed_point_iteration_2d.html</loc>
   </url>
   <url>
-    <loc>https://davidbarke.github.io/GKS_2022/reference/fpi_pc.html</loc>
+    <loc>https://davidbarke.github.io/GKS_2022/reference/fixed_point_iteration_pc.html</loc>
   </url>
   <url>
-    <loc>https://davidbarke.github.io/GKS_2022/reference/fpi_pd.html</loc>
+    <loc>https://davidbarke.github.io/GKS_2022/reference/fixed_point_iteration_pd.html</loc>
   </url>
   <url>
     <loc>https://davidbarke.github.io/GKS_2022/reference/ghaderi_params.html</loc>
@@ -61,6 +67,9 @@
     <loc>https://davidbarke.github.io/GKS_2022/reference/q_lambda_t1.html</loc>
   </url>
   <url>
-    <loc>https://davidbarke.github.io/GKS_2022/reference/risk_free_rate.html</loc>
+    <loc>https://davidbarke.github.io/GKS_2022/reference/replace_na_with_nearest.html</loc>
+  </url>
+  <url>
+    <loc>https://davidbarke.github.io/GKS_2022/reference/simulation.html</loc>
   </url>
 </urlset>

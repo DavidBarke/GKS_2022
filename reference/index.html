@@ -86,12 +86,17 @@
           
           <code><a href="pdf_lambda_t1.html">pdf_lambda_t1()</a></code> 
         </dt>
-        <dd>PDF of lambda_t1</dd>
+        <dd>PDF of \(\lambda_t \mid \lambda_{t+1}\)</dd>
       </dl><dl><dt>
           
           <code><a href="q_lambda_t1.html">q_lambda_t1()</a></code> 
         </dt>
-        <dd>Quantiles of lambda_t1</dd>
+        <dd>Quantiles of \(\lambda_t \mid \lambda_{t+1}\)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="J_t1.html">J_t1()</a></code> 
+        </dt>
+        <dd>\(J_{t+1}(\lambda_t)\)</dd>
       </dl></div><div class="section level2">
       <h2 id="wealth-consumption-ratio">Wealth-consumption ratio<a class="anchor" aria-label="anchor" href="#wealth-consumption-ratio"></a></h2>
       
@@ -157,21 +162,26 @@
 
       <dl><dt>
           
-          <code><a href="fpi_2d.html">fpi_2d()</a></code> 
+          <code><a href="fixed_point_iteration_2d.html">fixed_point_iteration_2d()</a></code> 
         </dt>
         <dd>2D fixed-point iteration</dd>
       </dl><dl><dt>
           
-          <code><a href="fpi_pc.html">fpi_pc()</a></code> 
+          <code><a href="fixed_point_iteration_pc.html">fixed_point_iteration_pc()</a></code> 
         </dt>
         <dd>Fixed-point iteration for wealth-consumption ratio</dd>
       </dl><dl><dt>
           
-          <code><a href="fpi_pd.html">fpi_pd()</a></code> 
+          <code><a href="fixed_point_iteration_pd.html">fixed_point_iteration_pd()</a></code> 
         </dt>
         <dd>Fixed-point iteration for price-dividend ratio</dd>
+      </dl><dl><dt>
+          
+          <code><a href="grid_to_function.html">grid_to_function()</a></code> 
+        </dt>
+        <dd>Convert \((\lambda, \pi)\) grid to function \(f(\lambda, \pi)\)</dd>
       </dl></div><div class="section level2">
-      <h2 id="asset-pricing-moments">Asset pricing moments<a class="anchor" aria-label="anchor" href="#asset-pricing-moments"></a></h2>
+      <h2 id="simulation">Simulation<a class="anchor" aria-label="anchor" href="#simulation"></a></h2>
       
       
 
@@ -183,9 +193,9 @@
 
       <dl><dt>
           
-          <code><a href="risk_free_rate.html">risk_free_rate()</a></code> 
+          <code><a href="simulation.html">simulation()</a></code> 
         </dt>
-        <dd>Risk-free rate \(r_{r,t}\)</dd>
+        <dd>Run a simulation of the model</dd>
       </dl></div><div class="section level2">
       <h2 id="utilities">Utilities<a class="anchor" aria-label="anchor" href="#utilities"></a></h2>
       
@@ -199,9 +209,14 @@
 
       <dl><dt>
           
-          <code><a href="grid_to_function.html">grid_to_function()</a></code> 
+          <code><a href="annual_growth.html">annual_growth()</a></code> 
         </dt>
-        <dd>Convert \((\lambda, \pi)\) grid to function \(f(\lambda, \pi)\)</dd>
+        <dd>Compute annual growth from monthly growth observations</dd>
+      </dl><dl><dt>
+          
+          <code><a href="replace_na_with_nearest.html">replace_na_with_nearest()</a></code> 
+        </dt>
+        <dd>Replace NA with nearest non-NA value</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
