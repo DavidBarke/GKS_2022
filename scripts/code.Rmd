@@ -1,10 +1,11 @@
 ---
-output: github_document
+title: "Code"
+author: "David Barkemeyer"
+date: "2023-04-29"
+output: html_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -15,11 +16,6 @@ knitr::opts_chunk$set(
   error = FALSE
 )
 ```
-
-# GKS2022
-
-<!-- badges: start -->
-<!-- badges: end -->
 
 ## Introduction
 
@@ -33,7 +29,7 @@ Make sure to install missing packages with `install.packages("missing-package")`
 # remotes::install_github("DavidBarke/GKS_2022")
 ```
 
-```{r setup}
+```{r}
 library(GKS2022)
 library(ggplot2)
 library(tibble)
@@ -144,7 +140,7 @@ ggplot(ann_data) +
 
 The price of the dividend claim is obviously wrong.
 
-```{r, echo = FALSE}
+```{r}
 ggplot(sim$data) +
   geom_line(aes(x = t, y = P_D_t), color = "black") +
   theme_bw() +
@@ -161,4 +157,3 @@ ggplot(sim$data) +
 # Asset Pricing Moments
 
 I would have liked to reproduce the simulations they did but without a correct price-dividend ratio this is a pointless endeavor. 
-
